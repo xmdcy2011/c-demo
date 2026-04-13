@@ -168,6 +168,18 @@ int main() {
     //
     //   shared_ptr：内部多一个引用计数块（control block）
     //     拷贝时计数+1，析构时计数-1，归零时才真正 delete
+    //
+    //   为什么用 make_shared 而不是 shared_ptr(new T)：
+    //     shared_ptr<T>(new T)  → 两次堆分配：T 对象一次，control block 一次
+    //     make_shared<T>()      → 一次堆分配：[T 对象 | control block] 连续内存
+    //                             更少内存碎片，cache 友好，性能更好
+    //
+    //     还有安全问题：
+    //       foo(shared_ptr<T>(new T), bar())  // bar() 抛异常 → new T 泄漏
+    //       foo(make_shared<T>(), bar())       // 构造和包装原子完成，不会泄漏
+    //
+    //   唯一需要 shared_ptr(new T) 的场景：自定义 deleter
+    //     shared_ptr<FILE> f(fopen("a.txt","r"), fclose);  // make_shared 做不到
     // ─────────────────────────────────────────────────────────
     std::cout << "\n=== unique_ptr / shared_ptr RAII ===" << std::endl;
     {
