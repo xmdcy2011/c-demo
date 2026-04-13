@@ -2,7 +2,7 @@
 #include "Cat.h"
 
 void Cat::speak() const {
-    std::cout << name() << " ˵: Meow!" << std::endl;
+    std::cout << name() << " 说: Meow!" << std::endl;
 }
 
-std::string Cat::name() const { return "è"; }
+std::string Cat::name() const { return "猫"; }

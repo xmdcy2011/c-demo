@@ -2,7 +2,7 @@
 #include "Dog.h"
 
 void Dog::speak() const {
-    std::cout << name() << " Ëµ: Woof!" << std::endl;
+    std::cout << name() << " è¯´: Woof!" << std::endl;
 }
 
-std::string Dog::name() const { return "¹·"; }
+std::string Dog::name() const { return "ç‹—"; }

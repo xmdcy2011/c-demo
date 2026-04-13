@@ -25,6 +25,8 @@ Buffer& Buffer::operator=(const Buffer& other) {
     return *this;
 }
 
+// noexcept：承诺不抛异常，让编译器可以放心做优化
+// 如果没有 noexcept，vector 扩容时可能不敢用移动而是用拷贝
 Buffer::Buffer(Buffer&& other) noexcept {
     data = other.data;    // 直接偷走指针，零拷贝
     size = other.size;
@@ -33,6 +35,7 @@ Buffer::Buffer(Buffer&& other) noexcept {
     std::cout << "[移动构造] addr=" << (void*)data << std::endl;
 }
 
+// noexcept：移动赋值也应该加 noexcept
 Buffer& Buffer::operator=(Buffer&& other) noexcept {
     if (this == &other) return *this;
     delete[] data;        // 释放自己的旧内存

@@ -1,4 +1,31 @@
 // UTF-8
+// ═══════════════════════════════════════════════════════════════
+// 09 命名空间 / 预处理器宏 / 类型转换
+// ═══════════════════════════════════════════════════════════════
+//
+// 预处理器宏：
+//   #define LOG(x)  → release 下空宏，零开销
+//   #ifdef _WIN32   → 条件编译，跨平台代码
+//   #pragma once    → 防止头文件重复包含（比 include guard 简洁）
+//
+// EXPORT 宏：
+//   Windows：__declspec(dllexport)
+//   Linux/Mac：__attribute__((visibility("default")))
+//   用条件编译统一成 EXPORT，代码跨平台
+//
+// 类型转换（优先用 static_cast，避免 C 风格 (int)x）：
+//   static_cast<T>       编译期安全转换，最常用
+//   reinterpret_cast<T>  重新解释内存，危险，谨慎用
+//   const_cast<T>        去掉 const，只在确定安全时用
+//   dynamic_cast<T>      运行时多态类型检查，失败返回 nullptr
+//
+// namespace：
+//   避免命名冲突，std:: 就是标准库的命名空间
+//   using namespace std; 方便但污染全局，头文件里不要用
+//
+// Java 对照：Java 没有预处理器，跨平台靠 JVM 抽象
+//            C++ 直接操作编译器指令，#ifdef 在编译期决定代码路径
+// ═══════════════════════════════════════════════════════════════
 #include "platform.h"
 #include <iostream>
 #include <cstdint>

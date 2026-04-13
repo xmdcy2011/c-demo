@@ -1,4 +1,18 @@
 // UTF-8
+// ═══════════════════════════════════════════════════════════════
+// 02 BankAccount 类
+// ═══════════════════════════════════════════════════════════════
+//
+// 文件结构：BankAccount.h（声明）/ BankAccount.cpp（实现）/ main.cpp
+//
+// 要点：
+//   构造函数用初始化列表 : balance(initial)，比构造体内赋值性能好
+//   （直接初始化，不是先默认构造再赋值）
+//   余额不足时 throw std::runtime_error
+//   const 成员函数 getBalance() const 保证不修改状态
+//
+// Java 对照：Java 构造函数里直接赋值；C++ 推荐用初始化列表
+// ═══════════════════════════════════════════════════════════════
 #include "BankAccount.h"
 #include <iostream>
 #include <windows.h>

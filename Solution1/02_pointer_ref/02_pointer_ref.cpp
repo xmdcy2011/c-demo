@@ -1,4 +1,31 @@
-﻿#include <iostream>
+﻿// ═══════════════════════════════════════════════════════════════
+// 02 指针 vs 引用 场景演示
+// ═══════════════════════════════════════════════════════════════
+//
+// 用引用的场景（优先选引用）：
+//   1. 参数不能为空，调用方保证传有效值
+//   2. 只读参数，避免拷贝：void print(const Widget& w)
+//   3. 修改调用方的变量：void swap(int& a, int& b)
+//
+// 用指针的场景：
+//   1. 参数可以为空（可选参数）：void render(Texture* tex)
+//   2. 需要重新指向别的对象
+//   3. 数组传递：void fill(int* arr, size_t len)
+//   4. 动态分配，需要管理生命周期
+//
+// 范围 for 循环：
+//   for (auto v : arr)        值拷贝，修改 v 不影响原数组
+//   for (auto& v : arr)       引用，修改 v 直接改原数组
+//   for (const auto& v : arr) 只读引用，不拷贝也不能改
+//
+// vector 存对象三种方式：
+//   vector<T>              存副本，vector 自动管理
+//   vector<T*>             存指针，堆对象需手动 delete（容易出错）
+//   vector<unique_ptr<T>>  智能指针，自动 delete（推荐）
+//
+// Java 对照：Java 对象是引用传递；C++ 可以显式选择值/指针/引用
+// ═══════════════════════════════════════════════════════════════
+#include <iostream>
 #include <string>
 #include <windows.h>
 #include <vector>

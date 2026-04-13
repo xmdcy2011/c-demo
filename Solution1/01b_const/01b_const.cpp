@@ -1,4 +1,26 @@
 // UTF-8
+// ═══════════════════════════════════════════════════════════════
+// 01b const 的各种位置
+// ═══════════════════════════════════════════════════════════════
+//
+// 记忆技巧：const 在 * 左边 → 值不能改；const 在 * 右边 → 指向不能改
+//   int* p              普通指针：指向可变，值可变
+//   const int* p        值不可改，指向可变
+//   int* const p        指向不可变，值可改
+//   const int* const p  都不可变
+//
+// const 成员函数：不能修改任何成员变量（除了 mutable）
+//   const 对象只能调用 const 成员函数
+//   mutable 成员变量在 const 函数里也能改（常用于缓存/计数器）
+//
+// {} vs () vs = 初始化语法：
+//   T x = val;  拷贝初始化，不能用于 atomic/unique_ptr 等禁拷贝类型
+//   T x(val);   直接初始化，允许窄化转换（double→int 悄悄截断）
+//   T x{val};   列表初始化，禁止窄化转换，推荐统一用这个
+//
+// Java 对照：Java 用 final 修饰变量，没有 const 成员函数的概念
+//            C++ 的 const 更细粒度，能精确控制"谁能改什么"
+// ═══════════════════════════════════════════════════════════════
 // C++ const 全面演示 + 类初始化方式
 #include <iostream>
 #include <string>
@@ -210,6 +232,41 @@ void demo_class_init() {
     std::cout << "Person5: p5a age=" << p5a.age << " name=" << p5a.name << std::endl;
     std::cout << "Person5: p5b age=" << p5b.age << " name=" << p5b.name << std::endl;
     std::cout << "Person5: p5c age=" << p5c.age << " name=" << p5c.name << std::endl;
+
+    // ─────────────────────────────────────────────────────────
+    // 6.7 {} vs () vs = 初始化语法对比
+    // ─────────────────────────────────────────────────────────
+    std::cout << "\n=== 6.7 {} vs () vs = 初始化语法 ===" << std::endl;
+
+    // 普通类型
+    int a1 = 10;    // 拷贝初始化
+    int a2(10);     // 直接初始化
+    int a3{10};     // 列表初始化（推荐，最严格）
+    std::cout << "int: a1=" << a1 << " a2=" << a2 << " a3=" << a3 << std::endl;
+
+    // {} 防止窄化转换（编译错误）
+    // int b{3.14};   // 编译错误！double → int 是窄化转换
+    int b(3.14);     // 编译通过，但截断为 3（可能不是你想要的）
+    int c = 3.14;    // 编译通过，但截断为 3
+    std::cout << "窄化: b(3.14)=" << b << " c=3.14=" << c << std::endl;
+
+    // std::string
+    std::string s1 = "hello";   // 拷贝初始化
+    std::string s2("hello");    // 直接初始化
+    std::string s3{"hello"};    // 列表初始化
+    std::cout << "string: s1=" << s1 << " s2=" << s2 << " s3=" << s3 << std::endl;
+
+    // atomic：= 不可用（禁用拷贝构造）
+    // std::atomic<bool> flag = false;  // 编译错误！
+    // std::atomic<bool> flag(false);   // OK
+    // std::atomic<bool> flag{false};   // OK（推荐）
+    std::cout << "atomic<bool>: 只能用 () 或 {}，不能用 =" << std::endl;
+
+    // 总结
+    std::cout << "\n--- 初始化语法总结 ---" << std::endl;
+    std::cout << "T x = val;   拷贝初始化，不能用于 atomic/unique_ptr 等禁拷贝类型" << std::endl;
+    std::cout << "T x(val);    直接初始化，允许窄化转换" << std::endl;
+    std::cout << "T x{val};    列表初始化，禁止窄化转换（推荐）" << std::endl;
 }
 
 // ═══════════════════════════════════════════════════════════════

@@ -7,10 +7,10 @@
 
 // 在第4题基础上加入移动语义
 class Buffer {
-private:
+public:
     char* data;
     size_t size;
-public:
+
     Buffer(const char* str);
     Buffer(const Buffer& other);                 // 拷贝构造
     Buffer& operator=(const Buffer& other);      // 拷贝赋值

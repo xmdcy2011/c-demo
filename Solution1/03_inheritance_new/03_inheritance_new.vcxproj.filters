@@ -18,5 +18,22 @@
     <ClCompile Include="03_inheritance_new.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Cat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Cat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

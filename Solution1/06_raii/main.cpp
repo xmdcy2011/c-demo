@@ -1,4 +1,25 @@
 // UTF-8
+// ═══════════════════════════════════════════════════════════════
+// 06 RAII（Resource Acquisition Is Initialization）
+// ═══════════════════════════════════════════════════════════════
+//
+// 核心思想：构造时获取资源，析构时释放资源
+//   构造函数 → fopen / new / lock
+//   析构函数 → fclose / delete / unlock（确定性调用，离开作用域必然执行）
+//
+// 好处：即使中途抛异常，析构函数也会被调用，资源不会泄漏
+//
+// 标准库里的 RAII 例子：
+//   std::lock_guard<std::mutex>  → 构造时加锁，析构时解锁
+//   std::unique_ptr              → 构造时持有指针，析构时 delete
+//   std::ifstream                → 构造时打开文件，析构时关闭
+//
+// 禁用拷贝：FileHandle(const FileHandle&) = delete
+//   文件句柄不应该被复制（两个对象析构时会 double-close）
+//
+// Java 对照：Java 用 try-with-resources + AutoCloseable
+//            C++ 用 RAII，析构函数确定性调用，不需要 try 块
+// ═══════════════════════════════════════════════════════════════
 #include "FileHandle.h"
 #include <iostream>
 #include <windows.h>
