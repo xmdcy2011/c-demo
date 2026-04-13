@@ -50,5 +50,56 @@ int main() {
         std::cout << "捕获异常: " << e.what() << std::endl;
     }
 
+    // ─────────────────────────────────────────────────────────
+    // .h 和 .cpp 的编译过程
+    //
+    //   .h 不参与编译，只是文本片段，#include 就是原样粘贴
+    //   .cpp 才是编译单元，每个生成一个 .obj，最后链接成 .exe
+    //
+    //   Buffer.cpp  →  [Buffer.h 内容 + Buffer.cpp 内容]  →  Buffer.obj
+    //   main.cpp    →  [Buffer.h 内容 + main.cpp 内容]    →  main.obj
+    //   链接：Buffer.obj + main.obj  →  程序.exe
+    //
+    //   为什么模板必须全放 .h：
+    //     编译器看到 Stack<int> 时需要立刻生成代码，必须能看到完整实现
+    //     如果实现放 .cpp：
+    //       Stack.cpp 编译时不知道 T 是什么 → 无法生成代码
+    //       main.cpp 看到 Stack<int> 但看不到实现 → 链接时找不到符号 → 报错
+    //
+    //   为什么 .h 要有 #pragma once：
+    //     A.h 和 B.h 都 include Stack.h，main.cpp include A.h 和 B.h
+    //     → Stack.h 被粘贴两次 → class Stack 重复定义 → 编译错误
+    //     #pragma once 告诉预处理器：这个文件只粘贴一次
+    //
+    //   模板实例化：每种类型生成一份独立代码
+    //     Stack<int>    → 编译器生成 Stack_int 的所有方法
+    //     Stack<string> → 编译器生成 Stack_string 的所有方法
+    //     Java 泛型是类型擦除，运行时只有一份；C++ 模板编译期生成多份
+    //     → C++ 性能更好，但编译慢，错误信息也更难看
+    // ─────────────────────────────────────────────────────────
+    std::cout << "\n=== 模板实例化：每种类型独立生成代码 ===" << std::endl;
+    {
+        // Stack<int> 和 Stack<double> 是完全不同的两个类
+        // 编译器为每种类型各生成一份 push/pop/top 的代码
+        Stack<int> si;
+        Stack<double> sd;
+        Stack<std::string> ss2;
+
+        si.push(42);
+        sd.push(3.14);
+        ss2.push("template");
+
+        std::cout << "Stack<int>:    "; si.print();
+        std::cout << "Stack<double>: "; sd.print();
+        std::cout << "Stack<string>: "; ss2.print();
+
+        // 函数模板：编译器根据参数自动推导 T
+        auto add = [](auto a, auto b) { return a + b; };
+        std::cout << "add(1, 2)     = " << add(1, 2) << "  (T=int)" << std::endl;
+        std::cout << "add(1.5, 2.5) = " << add(1.5, 2.5) << "  (T=double)" << std::endl;
+        std::cout << "add(\"a\", \"b\") = " << add(std::string("a"), std::string("b"))
+                  << "  (T=string)" << std::endl;
+    }
+
     return 0;
 }
